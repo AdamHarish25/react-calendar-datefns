@@ -7,19 +7,20 @@ import languages from './languages.json'
 import { ButtonsSection, CalendarSection, Container, Day, DayWeek, DayWeeksSection, HeaderSection, Month, MonthAndYearSection, WeeksSection } from './styles';
 
 interface CalendarProps {
-language?: 'pt-BR' | 'en-US',
-bgColor?: string,
-padding?: string,
-borderRadius?: string,
-colorArrows?: string,
-colorTextHeader?: string,
-colorTextdaysOfTheWeek?: string,
-colorDays?: string,
-bgMonth?: string,
-wDay?: string,
-hDay?: string,
-sizeArrow?: string,
-fontWeightMonthAndYear?: 'bold' | 'normal' | 'bolder' | 'lighter' | 'initial' | 'inherit',
+    language?: 'pt-BR' | 'en-US',
+    bgColor?: string,
+    padding?: string,
+    borderRadius?: string,
+    colorArrows?: string,
+    colorTextHeader?: string,
+    colorTextdaysOfTheWeek?: string,
+    colorDays?: string,
+    bgMonth?: string,
+    wDay?: string,
+    hDay?: string,
+    sizeArrow?: string,
+    colorSelectDay?: string,
+    fontWeightMonthAndYear?: 'bold' | 'normal' | 'bolder' | 'lighter' | 'initial' | 'inherit',
 }
 
 
@@ -37,6 +38,7 @@ wDay,
 hDay,
 sizeArrow,
 fontWeightMonthAndYear,
+colorSelectDay
 }: CalendarProps) {
 const daysWeek = language === 'pt-BR' ? languages['pt-BR'] : languages['en-US']
 const [currentDate, setCurrentDate] = useState(new Date())
@@ -59,7 +61,7 @@ function backgroudColorDateMultiple(date: Date) {
     const dateExists = multipleDates.find(d => format(d, 'dd/MM/yyyy') === format(date, 'dd/MM/yyyy'))
 
     if (dateExists) {
-        return 'red'
+        return 'day-selected'
     }
 }
 
@@ -101,8 +103,9 @@ return (
                             week.map((day: any) =>
                                 <Day
                                     onClick={() => getSelectedMultipleDates(day)}
-                                    BgColor={backgroudColorDateMultiple(day)}
-                                    color={colorDays}
+                                    color={`${backgroudColorDateMultiple(day) === 'day-selected' ? colorSelectDay : colorDays}`}
+                                    fontWeight={`${backgroudColorDateMultiple(day) === 'day-selected' ? 'bold' : ''}`}
+                                    fontSize={`${backgroudColorDateMultiple(day) === 'day-selected' ? '1.3rem' : ''}`}
                                     width={wDay}
                                     height={hDay}
                                 >

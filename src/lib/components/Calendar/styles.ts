@@ -103,6 +103,8 @@ interface DayProps {
     height?: string;
     width?: string;
     bgColor?: string;
+    fontWeight?: string;
+    fontSize?: string;
 }
 
 export const Day = styled.div<DayProps>`
@@ -110,13 +112,13 @@ export const Day = styled.div<DayProps>`
     width: ${props => props.width || '60px'};
     display: flex;
     align-items: center;
-    font-size: 1rem;
+    font-size: ${props => props.fontSize || '1rem'};
     justify-content: center;
     padding-top: 6px;
     padding: 10px;
     padding-right: 10px;
     background-color: ${props => props.BgColor || '#FFF'};
-    border-radius: ${props => props.BgColor ? '50%' : ''};
+    font-weight: ${props => props.fontWeight || 'normal'};
     color: ${props => props.color || '#FFF'};
     cursor: pointer;
 
