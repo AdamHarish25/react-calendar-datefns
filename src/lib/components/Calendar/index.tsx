@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { takeMonth, oldMonth, nextMonth } from './calendar'
 import { add, addDays, format } from 'date-fns'
 import { ptBR, enUS } from 'date-fns/locale';
@@ -66,6 +66,13 @@ function Calendar({
         }
     }
 
+    useEffect(() => {
+        if (startDate > endDate) {
+            setEndDate(startDate)
+            alert('Data final não pode ser menor que a data inicial')
+        }
+    }, [startDate, endDate])
+
     return (
         <>
             <Container>
@@ -94,7 +101,7 @@ function Calendar({
                         {
                             daysWeek.map((dayName, i) =>
                                 <DayWeek
-                                color={colorTextdaysOfTheWeek}>{dayName}</DayWeek>
+                                    color={colorTextdaysOfTheWeek}>{dayName}</DayWeek>
                             )
                         }
                     </DayWeeksSection>
@@ -113,8 +120,14 @@ function Calendar({
                             }</WeeksSection>)
                         }
                     </Month>
-                    <input type="date" placeholder='Data inicial' onChange={e => setStartDate(new Date(e.target.value))} />
-                    <input type="date" placeholder='Data final' onChange={e => setEndDate(new Date(e.target.value))} />
+                    <input type="date" placeholder='Data inicial' onChange={e => {
+                        const date = addDays(new Date(e.target.value), 1)
+                        setStartDate(date)
+                    }} />
+                    <input type="date" placeholder='Data final' onChange={e => {
+                        const date = addDays(new Date(e.target.value), 1)
+                        setEndDate(date)
+                    }} />
                 </CalendarSection>
             </Container>
         </>
