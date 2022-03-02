@@ -6,7 +6,7 @@ import { Calendar } from './lib/components/Calendar';
 ReactDOM.render(
   <React.StrictMode>
     <Calendar
-      language='pt-BR'
+      language='en-US'
       padding='15px'
       bgColor='#FFF'
       borderRadius='20px'

@@ -43,6 +43,7 @@ function Calendar({
     const [selectedDay, setSelectedDay] = useState(new Date())
     const [startDate, setStartDate] = useState(new Date())
     const [endDate, setEndDate] = useState(new Date())
+    const [multipleDates, setMultipleDates] = useState<Date[]>([])
 
     const data = takeMonth(currentDate)();
 
@@ -69,9 +70,14 @@ function Calendar({
     useEffect(() => {
         if (startDate > endDate) {
             setEndDate(startDate)
-            alert('Data final não pode ser menor que a data inicial')
+            const message = language === 'pt-BR'
+                ? 'Data final não pode ser menor que a data inicial'
+                : 'End date can not be less than start date'
+            alert(message)
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [startDate, endDate])
+
 
     return (
         <>
