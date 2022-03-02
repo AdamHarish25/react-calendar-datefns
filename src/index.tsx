@@ -1,17 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { Calendar } from './lib/components/Calendar';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Calendar
+      language='pt-BR'
+      padding='15px'
+      bgColor='#FFF'
+      borderRadius='20px'
+      colorArrows='#333'
+      colorTextHeader='#333'
+      colorTextdaysOfTheWeek='gray'
+      bgMonth='#FFF'
+      colorDays='#000'
+      wDay='60px'
+      hDay='50px'
+      sizeArrow='25'
+      fontWeightMonthAndYear='bold'
+    />
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
