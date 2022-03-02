@@ -117,7 +117,7 @@ export const Day = styled.div<DayProps>`
     padding-top: 6px;
     padding: 10px;
     padding-right: 10px;
-    background-color: ${props => props.BgColor || '#FFF'};
+    background-color: ${props => props.BgColor || ''};
     font-weight: ${props => props.fontWeight || 'normal'};
     color: ${props => props.color || '#FFF'};
     cursor: pointer;

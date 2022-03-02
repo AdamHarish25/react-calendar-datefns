@@ -5,7 +5,15 @@ const App: React.FC = () => {
     const [language, setLanguage] = React.useState("pt-BR" as "pt-BR" | "en-US");
 
   return (
-    <>
+    <div style={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+}}>
+  <div style={{
+    display: "flex",
+    flexDirection: "column",
+  }}>
       <select style={{
         borderRadius: "5px",
         border: "none",
@@ -24,20 +32,22 @@ const App: React.FC = () => {
       <Calendar
         language={language}
         padding="15px"
-        bgColor="#FFF"
+        bgColor="#001e3c"
         borderRadius="20px"
-        colorArrows="#333"
-        colorTextHeader="#333"
-        colorTextdaysOfTheWeek="gray"
-        bgMonth="#FFF"
-        colorDays="#000"
+        colorArrows="#FFF"
+        colorTextHeader="#FFF"
+        colorTextdaysOfTheWeek="#FFF"
+        bgMonth="#001e3c"
+        colorDays="#FFF"
         wDay="60px"
         hDay="50px"
         sizeArrow="25"
-        colorSelectDay="#001e3c"
+        colorSelectDay="#4d4b4b"
         fontWeightMonthAndYear="bold"
       />
-    </>
+
+  </div>
+    </div>
   );
 };
 
