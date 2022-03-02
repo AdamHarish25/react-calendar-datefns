@@ -6,7 +6,12 @@ const App: React.FC = () => {
 
   return (
     <>
-      <select onChange={
+      <select style={{
+        borderRadius: "5px",
+        border: "none",
+        padding: "5px",
+        fontSize: "16px",
+      }} onChange={
         (e) => {
             setLanguage(e.target.value as "pt-BR" | "en-US");
             }
@@ -14,6 +19,8 @@ const App: React.FC = () => {
         <option value="pt-BR">Português</option>
         <option value="en-US">English</option>
       </select>
+      <br />
+      <br />
       <Calendar
         language={language}
         padding="15px"
