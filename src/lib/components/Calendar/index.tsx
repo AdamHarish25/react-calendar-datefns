@@ -78,6 +78,19 @@ function Calendar({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [startDate, endDate])
 
+    function getSelectedMultipleDates(date: Date) {
+        const dateExists = multipleDates.find(d => format(d, 'dd/MM/yyyy') === format(date, 'dd/MM/yyyy'))
+
+        if (dateExists) {
+            const newDates = multipleDates.filter(d => format(d, 'dd/MM/yyyy') !== format(date, 'dd/MM/yyyy'))
+            setMultipleDates(newDates)
+        } else {
+        setMultipleDates([...multipleDates, date])
+        }
+    }
+
+    console.log(multipleDates)
+
 
     return (
         <>
@@ -116,7 +129,10 @@ function Calendar({
                             data.map((week: any, wi: number) => <WeeksSection>{
                                 week.map((day: any, di: number) =>
                                     <Day
-                                        onClick={() => setSelectedDay(day)}
+                                        onClick={() => {
+                                            setSelectedDay(day)
+                                            getSelectedMultipleDates(day)
+                                        }}
                                         color={colorDays} width={wDay} height={hDay}
                                         style={{
                                             color: `${startDateSelected(day) === 'selected' ? 'blue' : '' || endDateSelected(day) === 'selected' ? 'blue' : ''}`,
@@ -126,14 +142,14 @@ function Calendar({
                             }</WeeksSection>)
                         }
                     </Month>
-                    <input type="date" placeholder='Data inicial' onChange={e => {
-                        const date = addDays(new Date(e.target.value), 1)
-                        setStartDate(date)
-                    }} />
-                    <input type="date" placeholder='Data final' onChange={e => {
-                        const date = addDays(new Date(e.target.value), 1)
-                        setEndDate(date)
-                    }} />
+                        <h5>Dadas selecionadas</h5>
+                        <ul>
+                            {
+                                multipleDates.map((date: any) =>
+                                    <li>{format(date, 'dd/MM/yyyy')}</li>
+                                )
+                            }
+                        </ul>
                 </CalendarSection>
             </Container>
         </>
