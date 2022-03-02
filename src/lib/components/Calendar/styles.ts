@@ -102,6 +102,7 @@ interface DayProps {
     borderRadius?: string;
     height?: string;
     width?: string;
+    bgColor?: string;
 }
 
 export const Day = styled.div<DayProps>`
@@ -114,7 +115,8 @@ export const Day = styled.div<DayProps>`
     padding-top: 6px;
     padding: 10px;
     padding-right: 10px;
-    /* background-color: ${props => props.BgColor || '#FFF'}; */
+    background-color: ${props => props.BgColor || '#FFF'};
+    border-radius: ${props => props.BgColor ? '50%' : ''};
     color: ${props => props.color || '#FFF'};
     cursor: pointer;
 
