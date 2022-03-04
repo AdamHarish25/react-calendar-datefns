@@ -32,18 +32,23 @@ const App: React.FC = () => {
       <Calendar
         language={language}
         padding="15px"
+
         bgColor="#001e3c"
+        bgMonth="#001e3c"
         borderRadius="20px"
+
         colorArrows="#FFF"
         colorTextHeader="#FFF"
-        colorTextdaysOfTheWeek="#FFF"
-        bgMonth="#001e3c"
+        colorTextDaysOfTheWeek="#FFF"
         colorDays="#FFF"
+        colorSelectDay="#FFF"
+
         wDay="60px"
         hDay="50px"
+
         sizeArrow="25"
-        colorSelectDay="#4d4b4b"
         fontWeightMonthAndYear="bold"
+        circleSelectDayColor="#007fff"
       />
 
   </div>
