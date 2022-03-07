@@ -87,7 +87,16 @@ function Calendar({
   }
 
   function backgroudColorDateMultiple(date: Date) {
-    const dateExists = getDates().find(
+    if(isContinuous) {
+      const dateExists = getDates().find(
+        (d) => format(d, "dd/MM/yyyy") === format(date, "dd/MM/yyyy")
+      );
+
+      if (dateExists) {
+        return "day-selected";
+      }
+    }
+    const dateExists = multipleDates.find(
       (d) => format(d, "dd/MM/yyyy") === format(date, "dd/MM/yyyy")
     );
 
