@@ -113,13 +113,25 @@ interface DayProps {
 }
 
 interface CircleProps {
-    color?: string;
-    bgColor?: string;
-    borderColor?: string;
-    borderRadius?: string;
-    height?: string;
-    width?: string;
-    display?: string;
+  color?: string;
+  bgColor?: string;
+  borderColor?: string;
+  borderRadius?: string;
+  height?: string;
+  width?: string;
+  display?: string;
+}
+
+
+interface ContinuosBackgroudProps {
+  color?: string;
+  bgColor?: string;
+  borderColor?: string;
+  borderRadius?: string;
+  height?: string;
+  width?: string;
+  display?: string;
+  background?: string;
 }
 
 export const Circle = styled.div<CircleProps>`
@@ -132,6 +144,23 @@ export const Circle = styled.div<CircleProps>`
   align-items: center;
   justify-content: center;
   background-color: ${(props) => props.bgColor || "#FFF"};
+`;
+
+export const ContinuosBackground = styled.div<ContinuosBackgroudProps>`
+  position: absolute;
+  display: ${(props) => props.display || ""};
+  z-index: 1;
+  width: 100%;
+  height: 35px;
+  border-radius: ${(props) => props.borderRadius || "0px"};
+  align-items: center;
+  justify-content: center;
+  background-color: ${(props) => props.bgColor || "#FFF"};
+
+  &:first-child {
+    border-top-left-radius: ${(props) => props.borderRadius || "0px"};
+    border-top-right-radius: ${(props) => props.borderRadius || "0px"};
+  }
 `;
 
 export const Day = styled.div<DayProps>`

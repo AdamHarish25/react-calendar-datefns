@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { takeMonth, oldMonth, nextMonth } from "./calendar";
-import { format } from "date-fns";
+import { format, addDays } from "date-fns";
 import { ptBR, enUS } from "date-fns/locale";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import languages from "./languages.json";
@@ -49,11 +49,13 @@ function Calendar({
   fontWeightMonthAndYear,
   colorSelectDay,
   circleSelectDayColor,
+  isContinuous,
 }: CalendarProps) {
   const daysWeek =
     language === "pt-BR" ? languages["pt-BR"] : languages["en-US"];
   const [currentDate, setCurrentDate] = useState(new Date());
   const [multipleDates, setMultipleDates] = useState<Date[]>([]);
+  console.log(multipleDates);
 
   const data = takeMonth(currentDate)();
 
@@ -72,8 +74,20 @@ function Calendar({
     }
   }
 
+  function getDates() {
+    const dateArray = [];
+    let currentDate = multipleDates[0];
+    var stopDate = multipleDates[multipleDates.length - 1];
+    while (currentDate <= stopDate) {
+      dateArray.push(currentDate);
+      currentDate = addDays(currentDate, 1);
+    }
+
+    return dateArray;
+  }
+
   function backgroudColorDateMultiple(date: Date) {
-    const dateExists = multipleDates.find(
+    const dateExists = getDates().find(
       (d) => format(d, "dd/MM/yyyy") === format(date, "dd/MM/yyyy")
     );
 
@@ -83,10 +97,22 @@ function Calendar({
   }
 
   function isFistOfMultipleDates(day: Date) {
-    const firstDate = format(multipleDates[0], "dd/MM/yyyy");
+    if (multipleDates.length === 1) {
+      return "one-item";
+    }
 
-    if (firstDate === format(day, "dd/MM/yyyy")) return "day-selected-first";
+    if (String(day) === String(multipleDates[0])) {
+      return true;
+    }
   }
+
+  function isLastOfMultipleDates(day: Date) {
+    if (String(day) === String(multipleDates[multipleDates.length - 1])) {
+      return true;
+    }
+  }
+
+  // getDates(multipleDates[0], multipleDates[multipleDates.length - 1]);
 
   return (
     <>
@@ -136,14 +162,17 @@ function Calendar({
           </S.HeaderSection>
           <S.DayWeeksSection>
             {daysWeek.map((dayName, i) => (
-              <S.DayWeek color={colorTextDaysOfTheWeek}>{dayName}</S.DayWeek>
+              <S.DayWeek key={dayName} color={colorTextDaysOfTheWeek}>
+                {dayName}
+              </S.DayWeek>
             ))}
           </S.DayWeeksSection>
           <S.Month BgColor={bgMonth}>
             {data.map((week: any) => (
-              <S.WeeksSection>
+              <S.WeeksSection key={week}>
                 {week.map((day: Date) => (
                   <S.Day
+                    key={String(day)}
                     onClick={() => getSelectedMultipleDates(day)}
                     color={`${
                       backgroudColorDateMultiple(day) === "day-selected"
@@ -178,16 +207,44 @@ function Calendar({
                     >
                       {format(day, "dd")}
                     </S.TextDay>
-                    <S.Circle
-                      bgColor={circleSelectDayColor}
-                      display={`${
-                        backgroudColorDateMultiple(day) === "day-selected"
-                          ? ""
-                          : "none"
-                      }`}
-                    >
-                      {" "}
-                    </S.Circle>
+                    {!isContinuous && (
+                      <S.Circle
+                        bgColor={circleSelectDayColor}
+                        display={`${
+                          backgroudColorDateMultiple(day) === "day-selected"
+                            ? ""
+                            : "none"
+                        }`}
+                      >
+                        {" "}
+                      </S.Circle>
+                    )}
+                    {isContinuous && (
+                      <S.ContinuosBackground
+                        bgColor={circleSelectDayColor}
+                        display={`${
+                          backgroudColorDateMultiple(day) === "day-selected"
+                            ? ""
+                            : "none"
+                        }`}
+                        borderRadius={
+                          isFistOfMultipleDates(day)
+                            ? "10px 0px 0 10px"
+                            : "0" && isLastOfMultipleDates(day)
+                            ? "0 10px 10px 0"
+                            : "0"
+                        }
+                        style={{
+                          borderRadius: `${
+                            isFistOfMultipleDates(day) === "one-item"
+                              ? "10px"
+                              : ""
+                          }`,
+                        }}
+                      >
+                        {" "}
+                      </S.ContinuosBackground>
+                    )}
                   </S.Day>
                 ))}
               </S.WeeksSection>
