@@ -49,7 +49,7 @@ const App: React.FC = () => {
         sizeArrow="25"
         fontWeightMonthAndYear="bold"
         circleSelectDayColor="#007fff"
-        isContinuous={false}
+        isContinuous={true}
       />
 
   </div>

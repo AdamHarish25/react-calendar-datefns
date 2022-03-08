@@ -2,7 +2,11 @@ import { useState } from "react";
 import { takeMonth, oldMonth, nextMonth } from "./calendar";
 import { format, addDays } from "date-fns";
 import { ptBR, enUS } from "date-fns/locale";
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
+import {
+  AiOutlineArrowLeft,
+  AiOutlineArrowRight,
+  AiOutlineClear,
+} from "react-icons/ai";
 import languages from "./languages.json";
 import * as S from "./styles";
 
@@ -74,6 +78,10 @@ function Calendar({
     }
   }
 
+  function clearSelection() {
+    setMultipleDates([]);
+  }
+
   function getDates() {
     const dateArray = [];
     let currentDate = multipleDates[0];
@@ -87,8 +95,9 @@ function Calendar({
   }
 
   function backgroudColorDateMultiple(date: Date) {
-    if(isContinuous) {
-      const dateExists = getDates().find(
+    if (isContinuous) {
+      const arr = getDates();
+      const dateExists = arr.find(
         (d) => format(d, "dd/MM/yyyy") === format(date, "dd/MM/yyyy")
       );
 
@@ -167,6 +176,15 @@ function Calendar({
                   color={`${colorArrows}` || "#000"}
                 />
               </button>
+              <AiOutlineClear
+              size={sizeArrow || "15"}
+              onClick={clearSelection}
+              title={language === "pt-BR" ? "Limpar" : "Clear"}
+                style={{
+                  cursor: "pointer",
+                  color: `${colorArrows}` || "#FFF",
+                }}
+              />
             </S.ButtonsSection>
           </S.HeaderSection>
           <S.DayWeeksSection>
@@ -182,7 +200,9 @@ function Calendar({
                 {week.map((day: Date) => (
                   <S.Day
                     key={String(day)}
-                    onClick={() => getSelectedMultipleDates(day)}
+                    onClick={async () => {
+                      getSelectedMultipleDates(day);
+                    }}
                     color={`${
                       backgroudColorDateMultiple(day) === "day-selected"
                         ? colorSelectDay
