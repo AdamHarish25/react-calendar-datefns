@@ -110,6 +110,7 @@ interface DayProps {
   bgColor?: string;
   fontWeight?: string;
   fontSize?: string;
+  cursor?: string;
 }
 
 interface CircleProps {
@@ -177,7 +178,7 @@ export const Day = styled.div<DayProps>`
   background-color: ${(props) => props.BgColor || ""};
   font-weight: ${(props) => props.fontWeight || "normal"};
   color: ${(props) => props.color || "#FFF"};
-  cursor: pointer;
+  cursor: ${(props) => props.cursor || "pointer"};
 
   .selectedDay {
     background-color: ${(props) => props.BgColor || "#FFF"};

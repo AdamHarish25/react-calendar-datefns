@@ -9,33 +9,7 @@ import {
 } from "react-icons/ai";
 import languages from "./languages.json";
 import * as S from "./styles";
-
-interface CalendarProps {
-  language?: "pt-BR" | "en-US";
-
-  bgColor?: string;
-  padding?: string;
-  borderRadius?: string;
-  colorArrows?: string;
-  colorTextHeader?: string;
-  colorTextDaysOfTheWeek?: string;
-  colorDays?: string;
-  bgMonth?: string;
-  wDay?: string;
-  hDay?: string;
-  sizeArrow?: string;
-  colorSelectDay?: string;
-  circleSelectDayColor?: string;
-  fontWeightMonthAndYear?:
-    | "bold"
-    | "normal"
-    | "bolder"
-    | "lighter"
-    | "initial"
-    | "inherit";
-
-  isContinuous?: boolean;
-}
+import { CalendarProps } from "./types";
 
 function Calendar({
   language,
@@ -63,18 +37,33 @@ function Calendar({
 
   const data = takeMonth(currentDate)();
 
-  function getSelectedMultipleDates(date: Date) {
+  function getSelectedMultipleDates(date: Date, multipleDates: Date[]) {
     const dateExists = multipleDates.find(
       (d) => format(d, "dd/MM/yyyy") === format(date, "dd/MM/yyyy")
     );
 
-    if (dateExists) {
-      const newDates = multipleDates.filter(
-        (d) => format(d, "dd/MM/yyyy") !== format(date, "dd/MM/yyyy")
-      );
-      setMultipleDates(newDates);
+    if(isContinuous) {
+      if(multipleDates.length >= 2) {
+        return
+      } else {
+        if (dateExists) {
+          const newDates = multipleDates.filter(
+            (d) => format(d, "dd/MM/yyyy") !== format(date, "dd/MM/yyyy")
+          );
+          setMultipleDates(newDates);
+        } else {
+          setMultipleDates([...multipleDates, date]);
+        }
+      }
     } else {
-      setMultipleDates([...multipleDates, date]);
+      if (dateExists) {
+        const newDates = multipleDates.filter(
+          (d) => format(d, "dd/MM/yyyy") !== format(date, "dd/MM/yyyy")
+        );
+        setMultipleDates(newDates);
+      } else {
+        setMultipleDates([...multipleDates, date]);
+      }
     }
   }
 
@@ -82,21 +71,20 @@ function Calendar({
     setMultipleDates([]);
   }
 
-  function getDates() {
+  function getDates(initialDate: Date, stopDate: Date) {
     const dateArray = [];
-    let currentDate = multipleDates[0];
-    var stopDate = multipleDates[multipleDates.length - 1];
-    while (currentDate <= stopDate) {
-      dateArray.push(currentDate);
-      currentDate = addDays(currentDate, 1);
+    let initial = initialDate;
+    while (initial <= stopDate) {
+      dateArray.push(initial);
+      initial = addDays(initial, 1);
     }
 
     return dateArray;
   }
 
-  function backgroudColorDateMultiple(date: Date) {
+  function backgroundColorDateMultiple(date: Date) {
     if (isContinuous) {
-      const arr = getDates();
+      const arr = getDates(multipleDates[0], multipleDates[multipleDates.length - 1]);
       const dateExists = arr.find(
         (d) => format(d, "dd/MM/yyyy") === format(date, "dd/MM/yyyy")
       );
@@ -130,7 +118,12 @@ function Calendar({
     }
   }
 
-  // getDates(multipleDates[0], multipleDates[multipleDates.length - 1]);
+  function blockCursor() {
+    if (multipleDates.length >= 2) {
+      return 'not-allowed'
+    }
+    return 'pointer'
+  }
 
   return (
     <>
@@ -177,9 +170,9 @@ function Calendar({
                 />
               </button>
               <AiOutlineClear
-              size={sizeArrow || "15"}
-              onClick={clearSelection}
-              title={language === "pt-BR" ? "Limpar" : "Clear"}
+                size={sizeArrow || "15"}
+                onClick={clearSelection}
+                title={language === "pt-BR" ? "Limpar" : "Clear"}
                 style={{
                   cursor: "pointer",
                   color: `${colorArrows}` || "#FFF",
@@ -201,20 +194,21 @@ function Calendar({
                   <S.Day
                     key={String(day)}
                     onClick={async () => {
-                      getSelectedMultipleDates(day);
+                        getSelectedMultipleDates(day, multipleDates);
                     }}
+                    cursor={blockCursor()}
                     color={`${
-                      backgroudColorDateMultiple(day) === "day-selected"
+                      backgroundColorDateMultiple(day) === "day-selected"
                         ? colorSelectDay
                         : colorDays
                     }`}
                     fontWeight={`${
-                      backgroudColorDateMultiple(day) === "day-selected"
+                      backgroundColorDateMultiple(day) === "day-selected"
                         ? "bold"
                         : ""
                     }`}
                     fontSize={`${
-                      backgroudColorDateMultiple(day) === "day-selected"
+                      backgroundColorDateMultiple(day) === "day-selected"
                         ? "1.3rem"
                         : ""
                     }`}
@@ -222,14 +216,14 @@ function Calendar({
                     height={hDay}
                   >
                     <S.TextDay
-                      onClick={() => getSelectedMultipleDates(day)}
+                      onClick={() => getSelectedMultipleDates(day, multipleDates)}
                       color={`${
-                        backgroudColorDateMultiple(day) === "day-selected"
+                        backgroundColorDateMultiple(day) === "day-selected"
                           ? colorSelectDay
                           : colorDays
                       }`}
                       fontWeight={`${
-                        backgroudColorDateMultiple(day) === "day-selected"
+                        backgroundColorDateMultiple(day) === "day-selected"
                           ? "bold"
                           : ""
                       }`}
@@ -240,7 +234,7 @@ function Calendar({
                       <S.Circle
                         bgColor={circleSelectDayColor}
                         display={`${
-                          backgroudColorDateMultiple(day) === "day-selected"
+                          backgroundColorDateMultiple(day) === "day-selected"
                             ? ""
                             : "none"
                         }`}
@@ -252,7 +246,7 @@ function Calendar({
                       <S.ContinuosBackground
                         bgColor={circleSelectDayColor}
                         display={`${
-                          backgroudColorDateMultiple(day) === "day-selected"
+                          backgroundColorDateMultiple(day) === "day-selected"
                             ? ""
                             : "none"
                         }`}
