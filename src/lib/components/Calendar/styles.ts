@@ -32,10 +32,13 @@ export const HeaderSection = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  margin-bottom: 1rem;
+  max-width: 100%;
 `;
 
 export const MonthAndYearSection = styled.div<MonthAndYearSectionProps>`
   display: flex;
+  width: 100%;
   align-items: center;
 
   h1 {
@@ -53,7 +56,6 @@ export const MonthAndYearSection = styled.div<MonthAndYearSectionProps>`
 export const ButtonsSection = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
 
   button {
     background: transparent;

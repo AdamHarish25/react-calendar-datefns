@@ -84,7 +84,7 @@ function Calendar({
 
   function backgroundColorDateMultiple(date: Date) {
     if (isContinuous) {
-      const arr = getDates(multipleDates[0], multipleDates[multipleDates.length - 1]);
+      const arr = getDates(multipleDates[0], multipleDates[1]);
       const dateExists = arr.find(
         (d) => format(d, "dd/MM/yyyy") === format(date, "dd/MM/yyyy")
       );
@@ -252,15 +252,15 @@ function Calendar({
                         }`}
                         borderRadius={
                           isFistOfMultipleDates(day)
-                            ? "10px 0px 0 10px"
+                            ? "20px 0px 0 20px"
                             : "0" && isLastOfMultipleDates(day)
-                            ? "0 10px 10px 0"
+                            ? "0 20px 20px 0"
                             : "0"
                         }
                         style={{
                           borderRadius: `${
                             isFistOfMultipleDates(day) === "one-item"
-                              ? "10px"
+                              ? "20px"
                               : ""
                           }`,
                         }}
