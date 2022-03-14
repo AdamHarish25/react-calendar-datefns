@@ -22,5 +22,7 @@ export interface CalendarProps {
     | "initial"
     | "inherit";
 
+  initialDate?: Date;
+  endDate?: Date;
   isContinuous?: boolean;
 }

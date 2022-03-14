@@ -72,6 +72,8 @@ const App: React.FC = () => {
           fontWeightMonthAndYear="bold"
           circleSelectDayColor="#007fff"
           isContinuous={isContinuos}
+          initialDate={new Date("2022-03-15")}
+          endDate={new Date("2022-03-28")}
         />
       </div>
     </div>

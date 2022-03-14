@@ -1,15 +1,12 @@
 import { useCallback, useState } from "react";
-import { takeMonth, oldMonth, nextMonth } from "./calendar";
 import { format, addDays } from "date-fns";
-import { ptBR, enUS } from "date-fns/locale";
-import {
-  AiOutlineArrowLeft,
-  AiOutlineArrowRight,
-  AiOutlineClear,
-} from "react-icons/ai";
+
+import { takeMonth } from "./calendar";
 import languages from "./languages.json";
-import * as S from "./styles";
 import { CalendarProps } from "./types";
+
+import * as S from "./styles";
+
 import { Header } from "./Header";
 
 function Calendar({
@@ -29,6 +26,8 @@ function Calendar({
   colorSelectDay,
   circleSelectDayColor,
   isContinuous,
+  initialDate,
+  endDate
 }: CalendarProps) {
   const daysWeek =
     language === "pt-BR" ? languages["pt-BR"] : languages["en-US"];
@@ -43,9 +42,21 @@ function Calendar({
       (d) => format(d, "dd/MM/yyyy") === format(date, "dd/MM/yyyy")
     );
 
-    if(isContinuous) {
-      if(multipleDates.length >= 2) {
-        return
+    if(initialDate) {
+      if(date < initialDate) {
+        return false;
+      }
+    }
+
+    if(endDate) {
+      if(date > addDays(endDate, 1)) {
+        return false;
+      }
+    }
+
+    if (isContinuous) {
+      if (multipleDates.length >= 2) {
+        return;
       } else {
         if (dateExists) {
           const newDates = multipleDates.filter(
@@ -121,9 +132,9 @@ function Calendar({
 
   function blockCursor() {
     if (multipleDates.length >= 2) {
-      return 'not-allowed'
+      return "not-allowed";
     }
-    return 'pointer'
+    return "pointer";
   }
 
   return (
@@ -158,7 +169,7 @@ function Calendar({
                   <S.Day
                     key={String(day)}
                     onClick={async () => {
-                        getSelectedMultipleDates(day, multipleDates);
+                      getSelectedMultipleDates(day, multipleDates);
                     }}
                     cursor={blockCursor()}
                     color={`${
@@ -180,7 +191,9 @@ function Calendar({
                     height={hDay}
                   >
                     <S.TextDay
-                      onClick={() => getSelectedMultipleDates(day, multipleDates)}
+                      onClick={() =>
+                        getSelectedMultipleDates(day, multipleDates)
+                      }
                       color={`${
                         backgroundColorDateMultiple(day) === "day-selected"
                           ? colorSelectDay
