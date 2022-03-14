@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { takeMonth, oldMonth, nextMonth } from "./calendar";
 import { format, addDays } from "date-fns";
 import { ptBR, enUS } from "date-fns/locale";
@@ -10,6 +10,7 @@ import {
 import languages from "./languages.json";
 import * as S from "./styles";
 import { CalendarProps } from "./types";
+import { Header } from "./Header";
 
 function Calendar({
   language,
@@ -67,9 +68,9 @@ function Calendar({
     }
   }
 
-  function clearSelection() {
+  const clearSelection = useCallback(() => {
     setMultipleDates([]);
-  }
+  }, [setMultipleDates]);
 
   function getDates(initialDate: Date, stopDate: Date) {
     const dateArray = [];
@@ -133,53 +134,16 @@ function Calendar({
           padding={padding}
           borderRadius={borderRadius}
         >
-          <S.HeaderSection>
-            <S.MonthAndYearSection
-              fontWeightMonthAndYear={fontWeightMonthAndYear}
-              color={colorTextHeader}
-            >
-              <h1>
-                {format(currentDate, "MMMM", {
-                  locale: language === "pt-BR" ? ptBR : enUS,
-                })}
-              </h1>
-              <h1>{format(currentDate, "yyyy")}</h1>
-            </S.MonthAndYearSection>
-            <S.ButtonsSection>
-              <button
-                onClick={() => {
-                  const old = oldMonth(currentDate);
-                  setCurrentDate(old);
-                }}
-              >
-                <AiOutlineArrowLeft
-                  size={sizeArrow || "15"}
-                  color={`${colorArrows}` || "#000"}
-                  className={"text-2xl"}
-                />
-              </button>
-              <button
-                onClick={() => {
-                  const next = nextMonth(currentDate);
-                  setCurrentDate(next);
-                }}
-              >
-                <AiOutlineArrowRight
-                  size={sizeArrow || "15"}
-                  color={`${colorArrows}` || "#000"}
-                />
-              </button>
-              <AiOutlineClear
-                size={sizeArrow || "15"}
-                onClick={clearSelection}
-                title={language === "pt-BR" ? "Limpar" : "Clear"}
-                style={{
-                  cursor: "pointer",
-                  color: `${colorArrows}` || "#FFF",
-                }}
-              />
-            </S.ButtonsSection>
-          </S.HeaderSection>
+          <Header
+            colorTextHeader={colorTextHeader || "#000"}
+            currentDate={currentDate}
+            language={language}
+            fontWeightMonthAndYear={fontWeightMonthAndYear || "normal"}
+            setCurrentDate={setCurrentDate}
+            colorArrows={colorArrows || "#000"}
+            sizeArrow={sizeArrow || "1.5rem"}
+            clearSelection={clearSelection}
+          />
           <S.DayWeeksSection>
             {daysWeek.map((dayName, i) => (
               <S.DayWeek key={dayName} color={colorTextDaysOfTheWeek}>
